@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>更新日志 - Compiler IDE</title>
+    <link rel="icon" href="https://compileride.github.io/CompilerIDE_logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ========== 原更新日志页面样式（完全保留） ========== */
+        :root {
+            --primary-color: #00d4ff;
+            --secondary-color: #7b2cbf;
+            --accent-color: #ff6b35;
+            --text-light: #ffffff;
+            --text-muted: rgba(255, 255, 255, 0.7);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--text-light);
+            background: #050508;  /* 新背景基底色，与canvas一致 */
+            min-height: 100vh;
+        }
+
+        /* 新背景UI：canvas + 噪点层（完全复刻官网） */
+        #bg-canvas {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+            opacity: 0.025;
+        }
+
+        /* 原页面的所有glass样式（未改动） */
+        .glass {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 50%, rgba(255, 255, 255, 0.02) 100%);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .glass-card {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+            backdrop-filter: blur(15px) saturate(150%);
+            -webkit-backdrop-filter: blur(15px) saturate(150%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        }
+
+        /* 页面头部 */
+        .page-header {
+            padding: 6rem 2rem 3rem;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 100px;
+            color: var(--text-light);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(-5px);
+        }
+
+        .page-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .page-subtitle {
+            color: var(--text-muted);
+            font-size: 1.2rem;
+        }
+
+        /* 更新日志容器 */
+        .changelog-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 2rem 4rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .changelog-item {
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            border-radius: 20px;
+            border-left: 4px solid var(--primary-color);
+            position: relative;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .changelog-item::before {
+            content: '';
+            position: absolute;
+            left: -10px; top: 2rem;
+            width: 16px; height: 16px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            box-shadow: 0 0 20px var(--primary-color);
+        }
+
+        .changelog-item.latest {
+            border-left-color: var(--accent-color);
+        }
+
+        .changelog-item.latest::before {
+            background: var(--accent-color);
+            box-shadow: 0 0 20px var(--accent-color);
+        }
+
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .changelog-version {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .latest-badge {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.75rem;
+            background: linear-gradient(135deg, var(--accent-color), #ff8c5a);
+            border-radius: 100px;
+            color: white;
+            -webkit-text-fill-color: white;
+        }
+
+        .changelog-item ul {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .changelog-item li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            color: var(--text-muted);
+        }
+
+        .changelog-item li::before {
+            content: '✦';
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+        }
+
+        /* 加载状态 */
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-muted);
+        }
+
+        .loading i {
+            font-size: 2rem;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+            display: block;
+            color: var(--primary-color);
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* 滚动条 */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.3); }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); border-radius: 10px; }
+
+        ::selection { background: rgba(0, 212, 255, 0.3); color: white; }
+
+        @media (max-width: 768px) {
+            .page-header { padding: 4rem 1rem 2rem; }
+            .changelog-container { padding: 0 1rem 3rem; }
+            .changelog-item { padding: 1.5rem; }
+            .changelog-version { font-size: 1.25rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 新背景：canvas动态星空（来自官网） -->
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- 页面头部（完全保留原内容） -->
+    <header class="page-header">
+        <a href="https://compileride.github.io/" class="back-btn glass">
+            <i class="fas fa-arrow-left"></i>
+            <span>返回首页</span>
+        </a>
+        <h1 class="page-title">更新日志</h1>
+        <p class="page-subtitle">Compiler IDE 的完整版本历史</p>
+    </header>
+
+    <!-- 更新日志列表（完全保留原结构） -->
+    <main class="changelog-container" id="changelog-container">
+        <div class="loading">
+            <i class="fas fa-spinner"></i>
+            <span>加载中...</span>
+        </div>
+    </main>
+
+    <script>
+        // ========== 新背景动画：官网同款星空粒子 + 流星 + 光晕 ==========
+        (function() {
+            const canvas = document.getElementById('bg-canvas');
+            const ctx = canvas.getContext('2d');
+            let W, H;
+            let particles = [];
+            const COLORS = ['rgba(0,229,255,', 'rgba(124,58,237,'];
+            
+            function resize() {
+                W = canvas.width = window.innerWidth;
+                H = canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resize);
+            resize();
+            
+            class Particle {
+                constructor() { this.reset(); }
+                reset() {
+                    this.x = Math.random() * W;
+                    this.y = Math.random() * H;
+                    this.r = Math.random() * 1.5 + 0.3;
+                    this.vx = (Math.random() - 0.5) * 0.3;
+                    this.vy = (Math.random() - 0.5) * 0.3;
+                    this.alpha = Math.random() * 0.5 + 0.1;
+                    this.color = COLORS[Math.floor(Math.random() * COLORS.length)];
+                    this.baseAlpha = this.alpha;
+                    this.twinkleSpeed = Math.random() * 0.015 + 0.005;
+                    this.twinklePhase = Math.random() * Math.PI * 2;
+                }
+                update() {
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    this.twinklePhase += this.twinkleSpeed;
+                    this.alpha = this.baseAlpha * (0.6 + 0.4 * Math.sin(this.twinklePhase));
+                    if (this.x < -5 || this.x > W + 5 || this.y < -5 || this.y > H + 5) this.reset();
+                }
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+                    ctx.fillStyle = this.color + this.alpha + ')';
+                    ctx.fill();
+                }
+            }
+            
+            class Meteor {
+                constructor() { this.reset(); }
+                reset() {
+                    this.x = Math.random() * W * 0.7;
+                    this.y = Math.random() * H * 0.4;
+                    this.len = Math.random() * 120 + 80;
+                    this.speed = Math.random() * 6 + 4;
+                    this.alpha = 0;
+                    this.active = false;
+                    this.timer = Math.random() * 300;
+                }
+                update() {
+                    if (this.timer > 0) { this.timer--; return; }
+                    if (!this.active) { this.active = true; this.alpha = 0; }
+                    this.x += this.speed;
+                    this.y += this.speed * 0.5;
+                    this.alpha = Math.min(this.alpha + 0.08, 1);
+                    if (this.x > W + this.len) this.reset();
+                }
+                draw() {
+                    if (!this.active || this.alpha === 0) return;
+                    const grd = ctx.createLinearGradient(this.x - this.len, this.y - this.len * 0.5, this.x, this.y);
+                    grd.addColorStop(0, 'rgba(255,255,255,0)');
+                    grd.addColorStop(1, `rgba(255,255,255,${this.alpha * 0.8})`);
+                    ctx.beginPath();
+                    ctx.moveTo(this.x - this.len, this.y - this.len * 0.5);
+                    ctx.lineTo(this.x, this.y);
+                    ctx.strokeStyle = grd;
+                    ctx.lineWidth = 1.5;
+                    ctx.stroke();
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255,255,255,${this.alpha})`;
+                    ctx.fill();
+                }
+            }
+            
+            const blobs = [
+                { x: 0.15, y: 0.3, r: 0.35, color: 'rgba(124,58,237,0.06)', phase: 0, speed: 0.0008 },
+                { x: 0.8, y: 0.7, r: 0.4, color: 'rgba(0,229,255,0.05)', phase: 1.5, speed: 0.001 },
+                { x: 0.5, y: 0.5, r: 0.3, color: 'rgba(244,63,94,0.04)', phase: 3, speed: 0.0007 }
+            ];
+            
+            for (let i = 0; i < 180; i++) particles.push(new Particle());
+            const meteors = [new Meteor(), new Meteor(), new Meteor()];
+            
+            function loop() {
+                ctx.clearRect(0, 0, W, H);
+                const bg = ctx.createLinearGradient(0, 0, W, H);
+                bg.addColorStop(0, '#050508');
+                bg.addColorStop(0.5, '#07070f');
+                bg.addColorStop(1, '#050508');
+                ctx.fillStyle = bg;
+                ctx.fillRect(0, 0, W, H);
+                
+                blobs.forEach(b => {
+                    b.phase += b.speed;
+                    const bx = (b.x + Math.sin(b.phase) * 0.05) * W;
+                    const by = (b.y + Math.cos(b.phase * 0.7) * 0.05) * H;
+                    const br = b.r * Math.min(W, H);
+                    const grd = ctx.createRadialGradient(bx, by, 0, bx, by, br);
+                    grd.addColorStop(0, b.color);
+                    grd.addColorStop(1, 'transparent');
+                    ctx.fillStyle = grd;
+                    ctx.fillRect(0, 0, W, H);
+                });
+                
+                particles.forEach(p => { p.update(); p.draw(); });
+                meteors.forEach(m => { m.update(); m.draw(); });
+                requestAnimationFrame(loop);
+            }
+            loop();
+        })();
+
+        // ========== 原更新日志加载逻辑（完全未改动） ==========
+        // 生成星空（原页面曾有此函数，但背景已替换，无需再执行原星空生成，为保持兼容保留空壳）
+        function createStars() {
+            // 背景已被canvas完全覆盖，此函数留空避免报错
+        }
+
+        // 获取并渲染更新日志
+        async function loadChangelogs() {
+            const container = document.getElementById('changelog-container');
+            
+            try {
+                const response = await fetch('https://compileride.github.io/changelog-data.json');
+                const data = await response.json();
+                
+                container.innerHTML = data.changelogs.map((log, index) => `
+                    <div class="changelog-item glass-card ${index === 0 ? 'latest' : ''}" style="animation-delay: ${index * 0.05}s;">
+                        <div class="changelog-version">
+                            v${log.version}
+                            ${index === 0 ? '<span class="latest-badge">最新版本</span>' : ''}
+                        </div>
+                        <ul>
+                            ${log.changes.map(change => `<li>${change}</li>`).join('')}
+                        </ul>
+                    </div>
+                `).join('');
+                
+            } catch (error) {
+                console.error('加载失败:', error);
+                container.innerHTML = `
+                    <div class="loading">
+                        <i class="fas fa-exclamation-triangle" style="animation: none; color: var(--accent-color);"></i>
+                        <span>加载失败，请刷新页面重试</span>
+                    </div>
+                `;
+            }
+        }
+        
+        loadChangelogs();
+    </script>
+</body>
+</html>
