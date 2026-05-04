@@ -2,11 +2,7 @@
 [IDE 官网 + 下载](https://eric-t800.github.io/)
 
 ## 产品简介
-自 $2024$ 年 $5$ 月至 $2026$ 年 $1$ 月 $1$ 日，历经 $20$ 个月的开发，我们终于能将 Compiler IDE，在这个充满寓意着的日子里，呈现给大家！
-
-这不止是一个 IDE 的诞生，更是属于每一位 OIer 的新故事，即将从这里开始书写。未来已来，共同启程！
-
-本 IDE 由 [Eric1030](https://www.luogu.com.cn/user/995571)、[FlyHappily](https://www.luogu.com.cn/user/1364658)、[HuangRuibo](https://www.luogu.com.cn/user/1286421) 共同开发，支持的编程语言只有 C++。目前最新版本为 $3.4.9$。操作系统应为 Windows + 64 位操作系统（不支持 Win7 及更低版本）。
+本 IDE 由 [Eric1030](https://www.luogu.com.cn/user/995571)、[FlyHappily](https://www.luogu.com.cn/user/1364658)、[HuangRuibo](https://www.luogu.com.cn/user/1286421) 共同开发，支持的编程语言只有 C++。目前最新版本为 $3.5.2$。操作系统应为 Windows + 64 位操作系统（不支持 Win7 及更低版本）。
 
 截至目前，本 IDE 支持如下功能：
 - [x] 一键编译运行
@@ -137,6 +133,15 @@
 5. 新增对拍器功能
 6. 新增字体、字号调整功能
 7. 美化编辑器设置组 UI 和设置框按钮
+
+## 3.5.2
+1. 已发现终端功能包含大量 Bug，预计于 3.5.3 中修复
+2. 修复了代码美化的 Bug
+3. 修复了因编译器路径错误而导致的数据评测器无法正常运行的 Bug
+4. 修复了因编译器为 gcc 引起的数据评测器报错的 Bug
+5. UI 全面焕新
+6. 关于对话框再升级
+7. 新增缩进引导线等功能
 
 ## 预览
 ![](https://cdn.luogu.com.cn/upload/image_hosting/lyqjdhal.png)
