@@ -1,8 +1,8 @@
 ## 下载
-[IDE 官网 + 下载](https://eric-t800.github.io/)
+[IDE 官网 + 下载](https://compileride.github.io/)
 
 ## 产品简介
-本 IDE 由 [Eric1030](https://www.luogu.com.cn/user/995571)、[FlyHappily](https://www.luogu.com.cn/user/1364658)、[HuangRuibo](https://www.luogu.com.cn/user/1286421) 共同开发，支持的编程语言只有 C++。目前最新版本为 $3.5.2$。操作系统应为 Windows + 64 位操作系统（不支持 Win7 及更低版本）。
+本 IDE 由 CompilerIDE Team 共同开发，支持的编程语言只有 C++。目前最新版本为 $3.5.2$。操作系统应为 Windows + 64 位操作系统（不支持 Win7 及更低版本）。
 
 截至目前，本 IDE 支持如下功能：
 - [x] 一键编译运行
