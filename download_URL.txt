@@ -1,1 +1,1 @@
-https://github.com/CompilerIDE/CompilerIDE.github.io/releases/download/CompilerIDE/CompilerIDE_setup.exe
+https://gh-proxy.org/https://github.com/CompilerIDE/CompilerIDE.github.io/releases/download/CompilerIDE/CompilerIDE_setup.exe
