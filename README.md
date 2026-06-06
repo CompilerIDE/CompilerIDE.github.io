@@ -1,5 +1,5 @@
 ## 下载
-[IDE 官网 + 下载](https://compileride.github.io/)
+[IDE 官网 + 下载](https://compileride.cn)
 
 ## 产品简介
 本 IDE 由 CompilerIDE Team 共同开发，支持的编程语言只有 C++。目前最新版本为 $3.5.5$。操作系统应为 Windows + 64 位操作系统（不支持 Win7 及更低版本）。
