@@ -3,38 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Compiler IDE - 现代化C++开发环境</title>
-    <link rel="icon" href="https://compileride.github.io/CompilerIDE_logo.png">
+    <title>网站迁移通知 | Compiler IDE</title>
+    <link rel="icon" href="https://compileride.cn/CompilerIDE_logo.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* ========== 原有样式（完全保留，仅移除旧背景相关） ========== */
         :root {
             --primary-color: #00d4ff;
             --secondary-color: #7b2cbf;
             --accent-color: #ff6b35;
-            --glass-bg: rgba(255, 255, 255, 0.05);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --glass-shadow: rgba(0, 0, 0, 0.3);
             --text-light: #ffffff;
             --text-muted: rgba(255, 255, 255, 0.7);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             line-height: 1.6;
             color: var(--text-light);
             background: #050508;
-            overflow-x: hidden;
             min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
-        /* ========== 新背景UI（示例100%复刻） ========== */
         #bg-canvas {
             position: fixed;
             inset: 0;
@@ -52,154 +44,72 @@
             opacity: 0.025;
         }
 
-        /* ========== 原内容样式（完全保留） ========== */
         .glass {
-            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0.02) 100%);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 50%, rgba(255, 255, 255, 0.02) 100%);
             backdrop-filter: blur(20px) saturate(180%);
             -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border: 1px solid rgba(255,255,255,0.15);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -1px 0 rgba(255,255,255,0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
         }
-        .glass-strong {
-            background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.05) 100%);
-            backdrop-filter: blur(30px) saturate(200%);
-            -webkit-backdrop-filter: blur(30px) saturate(200%);
-            border: 1px solid rgba(255,255,255,0.2);
-            box-shadow: 0 15px 50px rgba(0,0,0,0.4), inset 0 2px 0 rgba(255,255,255,0.3), inset 0 -1px 0 rgba(255,255,255,0.1);
-        }
-        .glass-card {
-            background: linear-gradient(145deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%);
-            backdrop-filter: blur(15px) saturate(150%);
-            -webkit-backdrop-filter: blur(15px) saturate(150%);
-            border: 1px solid rgba(255,255,255,0.1);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.15);
-            position: relative;
-            overflow: hidden;
-        }
-        .glass-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-            transition: 0.6s;
-        }
-        .glass-card:hover::before { left: 100%; }
 
-        /* 导航栏 */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-            padding: 1rem 0;
-            transition: all 0.3s ease;
-        }
-        nav.scrolled { padding: 0.5rem 0; }
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0.8rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-radius: 100px;
-            margin-left: 2rem;
-            margin-right: 2rem;
-        }
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        .logo i {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-        }
-        .nav-links a {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s;
-            position: relative;
-            padding: 0.5rem 0;
-        }
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-            transition: width 0.3s;
-        }
-        .nav-links a:hover { color: var(--text-light); }
-        .nav-links a:hover::after { width: 100%; }
-
-        /* 主区域 */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 6rem 2rem;
-            position: relative;
-        }
-        .hero-content {
+        .page-header {
+            padding: 5rem 2rem 3rem;
             text-align: center;
-            max-width: 900px;
             position: relative;
             z-index: 2;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
-        .hero-badge { display: none; }
-        .hero h1 {
-            font-size: clamp(3rem, 8vw, 5rem);
+
+        .page-title {
+            font-size: clamp(3rem, 8vw, 4.5rem);
             font-weight: 800;
-            margin-bottom: 1.5rem;
-            line-height: 1.1;
-            animation: fadeInUp 0.8s ease 0.2s both;
-        }
-        .gradient-text {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 50%, var(--accent-color) 100%);
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color), var(--accent-color));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            background-size: 200% auto;
-            animation: gradientFlow 5s ease infinite;
+            margin-bottom: 1rem;
+            animation: fadeInUp 0.8s ease 0.2s both;
         }
-        @keyframes gradientFlow { 0%,100% { background-position: 0% center; } 50% { background-position: 100% center; } }
-        .hero .subtitle {
-            font-size: 1.3rem;
+
+        .page-subtitle {
             color: var(--text-muted);
-            margin-bottom: 3rem;
+            font-size: 1.2rem;
             max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
+            margin-bottom: 2rem;
+            line-height: 1.8;
             animation: fadeInUp 0.8s ease 0.4s both;
         }
-        .hero-buttons {
+
+        .redirect-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            border-bottom: 1px dashed var(--primary-color);
+            transition: all 0.3s;
+        }
+
+        .redirect-link:hover {
+            border-bottom-style: solid;
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+        }
+
+        #redirectMessage {
+            display: inline-block;
+            margin-top: 0.5rem;
+        }
+
+        .button-group {
             display: flex;
             gap: 1.5rem;
-            justify-content: center;
             flex-wrap: wrap;
-            animation: fadeInUp 0.8s ease 0.6s both;
+            justify-content: center;
+            animation: fadeInUp 0.8s ease 0.8s both;
         }
+
         .btn-primary {
             display: inline-flex;
             align-items: center;
@@ -211,27 +121,17 @@
             border-radius: 100px;
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
-            transition: all 0.4s cubic-bezier(0.175,0.885,0.32,1.275);
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 10px 40px rgba(0,212,255,0.3), 0 0 0 0 rgba(0,212,255,0.5);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 40px rgba(0, 212, 255, 0.3);
+            cursor: pointer;
         }
-        .btn-primary::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: 0.5s;
-        }
-        .btn-primary:hover::before { left: 100%; }
+
         .btn-primary:hover {
             transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 20px 60px rgba(0,212,255,0.4), 0 0 30px rgba(0,212,255,0.3);
+            box-shadow: 0 20px 60px rgba(0, 212, 255, 0.4), 0 0 30px rgba(0, 212, 255, 0.3);
         }
-        .btn-secondary {
+
+        .btn-outline {
             display: inline-flex;
             align-items: center;
             gap: 0.75rem;
@@ -242,655 +142,224 @@
             border-radius: 100px;
             color: var(--text-light);
             transition: all 0.4s;
+            cursor: pointer;
         }
-        .btn-secondary:hover {
+
+        .btn-outline:hover {
             transform: translateY(-3px);
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.1);
         }
-        .download-meta {
-            margin-top: 2rem;
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            flex-wrap: wrap;
-            animation: fadeInUp 0.8s ease 0.8s both;
+
+        footer {
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            z-index: 2;
+            margin-top: auto;
         }
-        .meta-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+
+        .copyright {
             color: var(--text-muted);
             font-size: 0.9rem;
         }
-        .meta-item i { color: var(--primary-color); }
 
-        /* 功能特性 */
-        .features { padding: 6rem 2rem; position: relative; z-index: 2; }
-        .section-header { text-align: center; margin-bottom: 4rem; }
-        .section-tag {
-            display: inline-block;
-            padding: 0.5rem 1.5rem;
-            border-radius: 100px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--primary-color);
-            margin-bottom: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        .section-title { font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; margin-bottom: 1rem; }
-        .section-desc { color: var(--text-muted); font-size: 1.1rem; max-width: 600px; margin: 0 auto; }
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .feature-card { padding: 2.5rem; border-radius: 24px; transition: all 0.4s cubic-bezier(0.175,0.885,0.32,1.275); cursor: pointer; }
-        .feature-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            border-color: rgba(0,212,255,0.3);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3), 0 0 40px rgba(0,212,255,0.1);
-        }
-        .feature-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            margin-bottom: 1.5rem;
-            background: linear-gradient(135deg, rgba(0,212,255,0.2), rgba(123,44,191,0.2));
-            color: var(--primary-color);
-        }
-        .feature-card h3 { font-size: 1.25rem; font-weight: 600; margin-bottom: 0.75rem; }
-        .feature-card p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.7; }
 
-        /* 图片懒加载 */
-        .lazyload-wrapper {
-            position: relative;
-            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
-            overflow: hidden;
-            min-height: 200px;
-        }
-        .lazyload-wrapper::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-            animation: shimmer 1.5s infinite;
-            z-index: 1;
-        }
-        .lazyload-wrapper.loaded::before { display: none; }
-        @keyframes shimmer { 100% { left: 100%; } }
-        .lazyload-placeholder {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: var(--text-muted);
-            font-size: 2.5rem;
-            opacity: 0.3;
-            z-index: 0;
-        }
-        .lazyload-wrapper.loaded .lazyload-placeholder { display: none; }
-        .lazyload { opacity: 0; transition: opacity 0.5s ease; }
-        .lazyload.loaded { opacity: 1; }
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.3); }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); border-radius: 10px; }
 
-        /* 截图展示 */
-        .screenshots { padding: 6rem 2rem; position: relative; z-index: 2; }
-        .screenshots-container { max-width: 1200px; margin: 0 auto; }
-        .screenshot-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-        .screenshot-card {
-            border-radius: 24px;
-            overflow: hidden;
-            transition: all 0.5s cubic-bezier(0.175,0.885,0.32,1.275);
-        }
-        .screenshot-card:hover {
-            transform: translateY(-15px) scale(1.03);
-            box-shadow: 0 30px 80px rgba(0,0,0,0.4), 0 0 50px rgba(0,212,255,0.15);
-        }
-        .screenshot-card img {
-            width: 100%;
-            aspect-ratio: 16/9;
-            object-fit: contain;
-            background: rgba(0,0,0,0.3);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        .screenshot-info { padding: 1.5rem; }
-        .screenshot-info h4 { font-size: 1.1rem; margin-bottom: 0.5rem; }
-        .screenshot-info p { color: var(--text-muted); font-size: 0.9rem; }
-
-        /* 下载计数动画 */
-        #downloadCount {
-            transition: all 0.3s cubic-bezier(0.175,0.885,0.32,1.275);
-            display: inline-block;
-            font-weight: 600;
-            color: var(--primary-color);
-        }
-        #downloadCount.updating { transform: scale(1.2); color: var(--accent-color); }
-        #downloadCount.loading { animation: pulse 1.5s ease-in-out infinite; }
-        @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
-
-        /* IDE对比表格 */
-        .comparison { padding: 6rem 2rem; position: relative; z-index: 2; }
-        .comparison-container { max-width: 1200px; margin: 0 auto; }
-        .comparison-table-wrapper { border-radius: 24px; overflow: visible; margin-top: 3rem; padding-top: 20px; }
-        .comparison-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; table-layout: fixed; }
-        .comparison-table thead { background: linear-gradient(135deg, rgba(0,212,255,0.2), rgba(123,44,191,0.2)); }
-        .comparison-table th { padding: 1.5rem 0.75rem; text-align: center; font-weight: 600; font-size: 0.9rem; border-bottom: 1px solid rgba(255,255,255,0.1); position: relative; }
-        .comparison-table th:first-child { text-align: left; padding-left: 1.5rem; width: 30%; }
-        .comparison-table th.highlight { background: linear-gradient(135deg, rgba(0,212,255,0.3), rgba(123,44,191,0.3)); position: relative; overflow: visible; }
-        .comparison-table th.highlight::before {
-            content: '推荐';
-            position: absolute;
-            top: -12px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            font-size: 0.7rem;
-            padding: 0.25rem 0.75rem;
-            border-radius: 100px;
-            font-weight: 600;
-            white-space: nowrap;
-            z-index: 10;
-        }
-        .comparison-table tbody tr { border-bottom: 1px solid rgba(255,255,255,0.05); transition: all 0.3s ease; }
-        .comparison-table tbody tr:hover { background: rgba(255,255,255,0.03); }
-        .comparison-table td { padding: 1rem 0.5rem; text-align: center; color: var(--text-muted); word-wrap: break-word; }
-        .comparison-table td:first-child { text-align: left; padding-left: 1.5rem; color: var(--text-light); font-weight: 500; }
-        .comparison-table td.highlight { background: rgba(0,212,255,0.05); }
-        .comparison-table .feature-name { display: flex; align-items: center; gap: 0.5rem; }
-        .comparison-table .feature-name i { color: var(--primary-color); font-size: 0.9rem; width: 18px; flex-shrink: 0; }
-        .comparison-table .feature-name span { font-size: 0.9rem; }
-        .check-yes { color: #22c55e !important; font-size: 1.1rem; }
-        .check-no { color: #ef4444 !important; font-size: 1.1rem; }
-        .check-partial { color: #f59e0b !important; font-size: 1.1rem; }
-        .ide-logo { display: flex; flex-direction: column; align-items: center; gap: 0.3rem; }
-        .ide-logo img { width: 36px; height: 36px; border-radius: 8px; }
-        .ide-logo .ide-name { font-weight: 600; font-size: 0.85rem; line-height: 1.2; }
-        .ide-logo .ide-version { font-size: 0.7rem; color: var(--text-muted); font-weight: 400; }
-        .comparison-legend { display: flex; justify-content: center; gap: 2rem; margin-top: 1.5rem; flex-wrap: wrap; }
-        .legend-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: var(--text-muted); }
-
-        /* 更新日志 */
-        .changelog { padding: 6rem 2rem; max-width: 800px; margin: 0 auto; position: relative; z-index: 2; }
-        .changelog-item { padding: 2rem; margin-bottom: 1.5rem; border-radius: 20px; border-left: 4px solid var(--primary-color); position: relative; }
-        .changelog-item::before {
-            content: '';
-            position: absolute;
-            left: -10px;
-            top: 2rem;
-            width: 16px;
-            height: 16px;
-            background: var(--primary-color);
-            border-radius: 50%;
-            box-shadow: 0 0 20px var(--primary-color);
-        }
-        .changelog-version {
-            font-size: 1.3rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 0.5rem;
-        }
-        .changelog-date { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem; }
-        .changelog-item ul { list-style: none; }
-        .changelog-item li {
-            padding: 0.4rem 0;
-            padding-left: 1.5rem;
-            position: relative;
-            color: var(--text-muted);
-        }
-        .changelog-item li::before { content: '✦'; position: absolute; left: 0; color: var(--accent-color); }
-
-        /* FAQ */
-        .faq { padding: 6rem 2rem; max-width: 800px; margin: 0 auto; position: relative; z-index: 2; }
-        .faq-item { margin-bottom: 1rem; border-radius: 16px; overflow: hidden; transition: all 0.3s; }
-        .faq-item:hover { transform: translateX(5px); }
-        .faq-question { padding: 1.5rem; font-weight: 600; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s; }
-        .faq-question:hover { background: rgba(255,255,255,0.05); }
-        .faq-question i { transition: transform 0.3s; color: var(--primary-color); }
-        .faq-answer { padding: 0 1.5rem; max-height: 0; overflow: hidden; transition: all 0.4s ease; color: var(--text-muted); }
-        .faq-answer.active { padding: 1.5rem; max-height: 500px; }
-
-        /* 新的下载区域 */
-        .cta-section { padding: 6rem 2rem; position: relative; z-index: 2; }
-        .cta-card {
-            position: relative;
-            border-radius: 40px;
-            overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.12);
-            background: #0c0c14;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-        .cta-bg {
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(ellipse at 20% 50%, rgba(0,229,255,0.1) 0%, transparent 60%),
-                        radial-gradient(ellipse at 80% 50%, rgba(124,58,237,0.1) 0%, transparent 60%);
-        }
-        .cta-grid-overlay {
-            position: absolute;
-            inset: 0;
-            background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-                              linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-            background-size: 40px 40px;
-        }
-        .cta-content {
-            position: relative;
-            z-index: 2;
-            text-align: center;
-            padding: 4rem 3rem;
-        }
-        .cta-content .section-label {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: rgba(0,229,255,0.08);
-            border: 1px solid rgba(0,229,255,0.2);
-            border-radius: 100px;
-            padding: 0.35rem 1rem;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--primary-color);
-            margin-bottom: 1.5rem;
-        }
-        .cta-content h2 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; letter-spacing: -0.02em; margin-bottom: 1rem; }
-        .cta-content p { color: var(--text-muted); font-size: 1.05rem; margin-bottom: 2rem; }
-        .cta-actions { display: flex; align-items: center; justify-content: center; gap: 1rem; flex-wrap: wrap; }
-        .cta-meta { margin-top: 1.5rem; display: flex; align-items: center; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
-        .cta-meta .meta-item { margin-top: 0; }
-
-        /* 页脚 */
-        footer { padding: 4rem 2rem 2rem; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); position: relative; z-index: 2; }
-        .footer-content { max-width: 1200px; margin: 0 auto; }
-        .social-links { display: flex; justify-content: center; gap: 1rem; margin-bottom: 2rem; }
-        .social-link {
-            width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-size: 1.25rem; color: var(--text-light); transition: all 0.3s; text-decoration: none;
-        }
-        .social-link:hover { transform: translateY(-5px); background: rgba(255,255,255,0.1); box-shadow: 0 10px 30px rgba(0,212,255,0.3); }
-        .footer-links { display: flex; justify-content: center; gap: 2rem; margin-bottom: 2rem; flex-wrap: wrap; }
-        .footer-links a { color: var(--text-muted); text-decoration: none; transition: color 0.3s; }
-        .footer-links a:hover { color: var(--primary-color); }
-        .copyright { color: var(--text-muted); font-size: 0.9rem; }
-
-        /* 动画 */
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
-        .fade-in { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.175,0.885,0.32,1.275); }
-        .fade-in.visible { opacity: 1; transform: translateY(0); }
+        ::selection { background: rgba(0, 212, 255, 0.3); color: white; }
 
         @media (max-width: 768px) {
-            .nav-links { display: none; }
-            .hero h1 { font-size: 2.5rem; }
-            .hero-buttons { flex-direction: column; align-items: center; }
-            .btn-primary, .btn-secondary { width: 100%; max-width: 300px; justify-content: center; }
-            .features-grid, .screenshot-grid { grid-template-columns: 1fr; }
-            .download-meta { flex-direction: column; gap: 0.75rem; }
-            .cta-content { padding: 2.5rem 1.5rem; }
-            .comparison-table { font-size: 0.85rem; }
-            .comparison-table th, .comparison-table td { padding: 1rem 0.5rem; }
-            .comparison-table td:first-child { padding-left: 1rem; }
-            .comparison-legend { flex-direction: column; align-items: center; gap: 0.75rem; }
+            .page-header { padding: 4rem 1rem 2rem; }
+            .button-group { flex-direction: column; align-items: center; }
+            .btn-primary, .btn-outline { width: 100%; max-width: 300px; justify-content: center; }
         }
-
-        /* 滚动条 */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); }
-        ::-webkit-scrollbar-thumb { background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--primary-color); }
-        ::selection { background: rgba(0,212,255,0.3); color: white; }
-
-        /* 底部浮动通知条 - 绿色主题 */
-        .ann-bar {
-            position: fixed;
-            bottom: 1.5rem;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 1000;
-            background: rgba(10,10,20,0.95);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(34, 197, 94, 0.4);   /* 绿色边框 */
-            border-radius: 9999px;
-            padding: 0.625rem 1.25rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            font-size: 0.8rem;
-            color: rgba(200,200,220,0.5);
-            white-space: nowrap;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.5);
-            animation: slideUp 0.6s 1.5s cubic-bezier(0.175,0.885,0.32,1.275) both;
-        }
-        .ann-bar .ann-dot {
-            width: 6px;
-            height: 6px;
-            background: #22c55e;  /* 绿色脉冲点 */
-            border-radius: 50%;
-            animation: pulse-dot 1.5s ease-in-out infinite;
-            flex-shrink: 0;
-        }
-        @keyframes pulse-dot { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.7); } }
-        .ann-close {
-            background: none;
-            border: none;
-            color: rgba(200,200,220,0.3);
-            cursor: pointer;
-            font-size: 0.75rem;
-            padding: 0.25rem;
-            margin-left: 0.25rem;
-            transition: color 0.2s;
-        }
-        .ann-close:hover { color: var(--text-light); }
-        @keyframes slideUp { from { opacity: 0; transform: translateX(-50%) translateY(20px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
-        @media (max-width: 768px) { .ann-bar { white-space: normal; text-align: center; max-width: 90%; } }
     </style>
 </head>
 <body>
+    <canvas id="bg-canvas"></canvas>
 
-<canvas id="bg-canvas"></canvas>
+    <header class="page-header">
+        <h1 class="page-title">网站迁移通知</h1>
+        <p class="page-subtitle">
+            官网已更新至 <a href="https://compileride.cn" class="redirect-link" target="_blank" rel="noopener">https://compileride.cn</a><br>
+            <span id="redirectMessage">将在 <strong id="countdownDisplay">3</strong> 秒后自动跳转。</span>
+        </p>
 
-<!-- 底部浮动通知条（绿色主题，文字已优化） -->
-<div class="ann-bar" id="annBar">
-    <span class="ann-dot"></span>
-    <span>v3.5.2 正式发布！Compiler IDE 现已基于 GNU GPL v3.0 开源，UI 全面焕新。</span>
-    <button class="ann-close" onclick="document.getElementById('annBar').style.display='none'">✕</button>
-</div>
-
-<!-- 导航栏 -->
-<nav id="navbar">
-    <div class="nav-container glass">
-        <a href="#" class="logo"><i class="fas fa-code"></i> Compiler IDE</a>
-        <ul class="nav-links">
-            <li><a href="#features">功能特性</a></li>
-            <li><a href="#screenshots">界面预览</a></li>
-            <li><a href="#comparison">IDE对比</a></li>
-            <li><a href="#changelog">更新日志</a></li>
-            <li><a href="#faq">常见问题</a></li>
-            <li><a href="#download">下载</a></li>
-        </ul>
-    </div>
-</nav>
-
-<!-- 英雄区域 -->
-<section class="hero">
-    <div class="hero-content">
-        <div class="hero-badge glass" style="display: none;"></div>
-        <h1><span class="gradient-text">Compiler IDE</span></h1>
-        <p class="subtitle">现代化的C++开发环境，专为提升编程效率而设计。集成智能补全、调试器、竞赛模式等强大功能。</p>
-        <div class="hero-buttons">
-            <a href="https://gh-proxy.org/https://github.com/CompilerIDE/CompilerIDE.github.io/releases/download/CompilerIDE/CompilerIDE_setup.exe" class="btn-primary" id="downloadBtn">
-                <i class="fas fa-download"></i><span>立即下载 v3.5.2</span>
+        <div class="button-group">
+            <a href="https://compileride.cn" class="btn-primary">
+                <i class="fas fa-external-link-alt"></i> 立即跳转
             </a>
-            <a href="#features" class="btn-secondary glass"><i class="fas fa-arrow-right"></i><span>了解更多</span></a>
+            <a href="javascript:void(0)" class="btn-outline glass" onclick="stopRedirect()">
+                <i class="fas fa-hand"></i> 暂不跳转
+            </a>
         </div>
-        <div class="download-meta">
-            <div class="meta-item"><i class="fab fa-windows"></i><span>Windows 10/11</span></div>
-            <div class="meta-item"><i class="fas fa-microchip"></i><span>64位系统</span></div>
-            <div class="meta-item"><i class="fas fa-box"></i><span>约 400MB - 1GB</span></div>
-            <div class="meta-item"><i class="fas fa-certificate"></i><span>免费使用</span></div>
-            <div class="meta-item"><i class="fas fa-download"></i><span>累计用户：900+</span></div>
-        </div>
-    </div>
-</section>
+    </header>
 
-<!-- 功能特性 -->
-<section class="features" id="features">
-    <div class="section-header">
-        <div class="section-tag glass">功能特性</div>
-        <h2 class="section-title">强大功能，助力编程</h2>
-        <p class="section-desc">专业的C++开发工具，让编程变得更加高效和愉悦</p>
-    </div>
-    <div class="features-grid">
-        <div class="feature-card glass-card fade-in"><div class="feature-icon"><i class="fas fa-layer-group"></i></div><h3>多文件标签页编辑</h3><p>支持同时打开多个文件，标签页式管理，让代码编辑更高效便捷</p></div>
-        <div class="feature-card glass-card fade-in"><div class="feature-icon"><i class="fas fa-project-diagram"></i></div><h3>项目管理器</h3><p>直观的项目文件树，支持文件和文件夹操作，轻松管理大型项目</p></div>
-        <div class="feature-card glass-card fade-in"><div class="feature-icon"><i class="fas fa-palette"></i></div><h3>智能语法高亮</h3><p>支持C++14/17/20/23标准，关键字、类型、函数等彩色显示</p></div>
-        <div class="feature-card glass-card fade-in"><div class="feature-icon"><i class="fas fa-magic"></i></div><h3>自动补全</h3><p>智能代码补全、自动括号匹配、自动缩进，大幅提升编码速度</p></div>
-        <div class="feature-card glass-card fade-in"><div class="feature-icon"><i class="fas fa-bug"></i></div><h3>集成调试器</h3><p>内置GDB调试支持，断点、单步执行、变量监视，快速定位问题</p></div>
-        <div class="feature-card glass-card fade-in"><div class="feature-icon"><i class="fas fa-terminal"></i></div><h3>集成终端</h3><p>内置终端支持中文显示，UTF-8编码，运行命令更方便</p></div>
-        <div class="feature-card glass-card fade-in"><div class="feature-icon"><i class="fas fa-trophy"></i></div><h3>竞赛模式</h3><p>专为算法竞赛设计，倒计时/正计时器，禁用非必要功能，专注编码</p></div>
-        <div class="feature-card glass-card fade-in"><div class="feature-icon"><i class="fas fa-chart-line"></i></div><h3>系统诊断工具</h3><p>实时监控CPU、内存使用率，性能图表可视化展示</p></div>
-        <div class="feature-card glass-card fade-in"><div class="feature-icon"><i class="fas fa-sync-alt"></i></div><h3>自动更新</h3><p>启动时自动检查更新，保持IDE始终处于最新版本</p></div>
-    </div>
-</section>
+    <footer>
+        <p class="copyright">&copy; 2026 Compiler IDE. All rights reserved.</p>
+    </footer>
 
-<!-- 界面预览 -->
-<section class="screenshots" id="screenshots">
-    <div class="screenshots-container">
-        <div class="section-header"><div class="section-tag glass">界面预览</div><h2 class="section-title">精心设计的界面</h2><p class="section-desc">现代化暗色主题，护眼且美观</p></div>
-        <div class="screenshot-grid">
-            <div class="screenshot-card glass-card fade-in"><div class="lazyload-wrapper"><i class="fas fa-image lazyload-placeholder"></i><img class="lazyload" data-src="https://compileride.github.io/CompilerIDE_main.png" alt="IDE主界面"></div><div class="screenshot-info"><h4>现代化暗色主题</h4><p>护眼暗色主题，支持语法高亮和行号显示</p></div></div>
-            <div class="screenshot-card glass-card fade-in"><div class="lazyload-wrapper"><i class="fas fa-image lazyload-placeholder"></i><img class="lazyload" data-src="https://compileride.github.io/CompilerIDE_wjdh.png" alt="项目管理器"></div><div class="screenshot-info"><h4>项目管理器</h4><p>直观的文件树结构，支持拖拽操作</p></div></div>
-            <div class="screenshot-card glass-card fade-in"><div class="lazyload-wrapper"><i class="fas fa-image lazyload-placeholder"></i><img class="lazyload" data-src="https://compileride.github.io/CompilerIDE_contest.png" alt="竞赛模式"></div><div class="screenshot-info"><h4>竞赛模式计时器</h4><p>专注编程，倒计时提醒</p></div></div>
-            <div class="screenshot-card glass-card fade-in"><div class="lazyload-wrapper"><i class="fas fa-image lazyload-placeholder"></i><img class="lazyload" data-src="https://compileride.github.io/CompilerIDE_CPU.png" alt="诊断工具"></div><div class="screenshot-info"><h4>系统诊断工具</h4><p>实时监控CPU和内存使用情况</p></div></div>
-        </div>
-    </div>
-</section>
+    <script>
+        // 背景星空动画（完全保留）
+        (function() {
+            const canvas = document.getElementById('bg-canvas');
+            const ctx = canvas.getContext('2d');
+            let W, H;
+            let particles = [];
+            const COLORS = ['rgba(0,229,255,', 'rgba(124,58,237,'];
 
-<!-- IDE对比 -->
-<section class="comparison" id="comparison"><div class="comparison-container"><div class="section-header"><div class="section-tag glass">IDE对比</div><h2 class="section-title">为什么选择 Compiler IDE？</h2><p class="section-desc">与其他主流C++ IDE的功能对比</p></div><div class="comparison-table-wrapper glass-card fade-in"><table class="comparison-table"><thead><tr><th>功能特性</th><th class="highlight"><div class="ide-logo"><span class="ide-name">Compiler IDE</span><span class="ide-version">v3.5.2</span></div></th><th><div class="ide-logo"><span class="ide-name">Dev-C++</span><span class="ide-version">v5.11</span></div></th><th><div class="ide-logo"><span class="ide-name">Code::Blocks</span><span class="ide-version">v20.03</span></div></th><th><div class="ide-logo"><span class="ide-name">Visual Studio</span><span class="ide-version">v2026</span></div></th> </tr</thead><tbody>
-    <tr><td><div class="feature-name"><i class="fas fa-palette"></i><span>现代化UI界面</span></div></td><td class="highlight"><i class="fas fa-check-circle check-yes"></i></td><td><i class="fas fa-times-circle check-no"></i></td><td><i class="fas fa-minus-circle check-partial"></i></td><td><i class="fas fa-check-circle check-yes"></i></td> </tr>
-    <tr><td><div class="feature-name"><i class="fas fa-code"></i><span>C++20/23 标准支持</span></div></td><td class="highlight"><i class="fas fa-check-circle check-yes"></i></td><td><i class="fas fa-minus-circle check-partial"></i></td><td><i class="fas fa-minus-circle check-partial"></i></td><td><i class="fas fa-check-circle check-yes"></i></td> </tr>
-    <tr><td><div class="feature-name"><i class="fas fa-lightbulb"></i><span>代码补全</span></div></td><td class="highlight"><i class="fas fa-check-circle check-yes"></i></td><td><i class="fas fa-minus-circle check-partial"></i></td><td><i class="fas fa-check-circle check-yes"></i></td><td><i class="fas fa-check-circle check-yes"></i></td> </tr>
-    <tr><td><div class="feature-name"><i class="fas fa-lightbulb"></i><span>AI 助手</span></div></td><td class="highlight"><i class="fas fa-check-circle check-yes"></i></td><td><i class="fas fa-times-circle check-no"></i></td><td><i class="fas fa-times-circle check-no"></i></td><td><i class="fas fa-check-circle check-yes"></i></td> </tr>
-    <tr><td><div class="feature-name"><i class="fas fa-bug"></i><span>集成调试器 (GDB)</span></div></td><td class="highlight"><i class="fas fa-check-circle check-yes"></i></td><td><i class="fas fa-check-circle check-yes"></i></td><td><i class="fas fa-check-circle check-yes"></i></td><td><i class="fas fa-check-circle check-yes"></i></td> </tr>
-    <tr><td><div class="feature-name"><i class="fas fa-terminal"></i><span>集成终端</span></div></td><td class="highlight"><i class="fas fa-check-circle check-yes"></i></td><td><i class="fas fa-times-circle check-no"></i></td><td><i class="fas fa-times-circle check-no"></i></td><td><i class="fas fa-check-circle check-yes"></i></td> </tr>
-    <tr><td><div class="feature-name"><i class="fas fa-trophy"></i><span>竞赛模式</span></div></td><td class="highlight"><i class="fas fa-check-circle check-yes"></i></td><td><i class="fas fa-times-circle check-no"></i></td><td><i class="fas fa-times-circle check-no"></i></td><td><i class="fas fa-times-circle check-no"></i></td> </tr>
-    <tr><td><div class="feature-name"><i class="fas fa-terminal"></i><span>数据评测器</span></div></td><td class="highlight"><i class="fas fa-check-circle check-yes"></i></td><td><i class="fas fa-times-circle check-no"></i></td><td><i class="fas fa-times-circle check-no"></i></td><td><i class="fas fa-times-circle check-no"></i></td> </tr>
-    <tr><td><div class="feature-name"><i class="fas fa-chart-line"></i><span>系统性能监控</span></div></td><td class="highlight"><i class="fas fa-check-circle check-yes"></i></td><td><i class="fas fa-times-circle check-no"></i></td><td><i class="fas fa-times-circle check-no"></i></td><td><i class="fas fa-minus-circle check-partial"></i></td> </tr>
-    <tr><td><div class="feature-name"><i class="fas fa-palette"></i><span>EasyX 支持</span></div></td><td class="highlight"><i class="fas fa-check-circle check-yes"></i></td><td><i class="fas fa-times-circle check-no"></i></td><td><i class="fas fa-times-circle check-no"></i></td><td><i class="fas fa-check-circle check-yes"></i></td> </tr>
-    <tr><td><div class="feature-name"><i class="fas fa-code"></i><span>对拍器</span></div></td><td class="highlight"><i class="fas fa-check-circle check-yes"></i></td><td><i class="fas fa-times-circle check-no"></i></td><td><i class="fas fa-times-circle check-no"></i></td><td><i class="fas fa-times-circle check-no"></i></td> </tr>
-    <tr><td><div class="feature-name"><i class="fas fa-code"></i><span>临时编译、临时编译运行</span></div></td><td class="highlight"><i class="fas fa-check-circle check-yes"></i></td><td><i class="fas fa-times-circle check-no"></i></td><td><i class="fas fa-times-circle check-no"></i></td><td><i class="fas fa-times-circle check-no"></i></td> </tr>
-    <tr><td><div class="feature-name"><i class="fas fa-sync-alt"></i><span>自动更新</span></div></td><td class="highlight"><i class="fas fa-check-circle check-yes"></i></td><td><i class="fas fa-times-circle check-no"></i></td><td><i class="fas fa-times-circle check-no"></i></td><td><i class="fas fa-check-circle check-yes"></i></td> </tr>
-    <tr><td><div class="feature-name"><i class="fas fa-folder-tree"></i><span>项目文件管理器</span></div></td><td class="highlight"><i class="fas fa-check-circle check-yes"></i></td><td><i class="fas fa-minus-circle check-partial"></i></td><td><i class="fas fa-check-circle check-yes"></i></td><td><i class="fas fa-check-circle check-yes"></i></td> </tr>
-    <tr><td><div class="feature-name"><i class="fas fa-language"></i><span>中文界面支持</span></div></td><td class="highlight"><i class="fas fa-check-circle check-yes"></i></td><td><i class="fas fa-check-circle check-yes"></i></td><td><i class="fas fa-minus-circle check-partial"></i></td><td><i class="fas fa-check-circle check-yes"></i></td> </tr>
-    <tr><td><div class="feature-name"><i class="fas fa-bolt"></i><span>启动速度</span></div></td><td class="highlight"><span style="color:#22c55e;">快速</span></td><td><span style="color:#22c55e;">快速</span></td><td><span style="color:#f59e0b;">中等</span></td><td><span style="color:#ef4444;">较慢</span></td> </tr>
-    <tr><td><div class="feature-name"><i class="fas fa-dollar-sign"></i><span>价格</span></div></td><td class="highlight"><span style="color:#22c55e;">免费</span></td><td><span style="color:#22c55e;">免费</span></td><td><span style="color:#22c55e;">免费</span></td><td><span style="color:#f59e0b;">社区版免费</span></td> </tr>
-    <tr><td><div class="feature-name"><i class="fas fa-calendar-alt"></i><span>最后更新</span></div></td><td class="highlight"><span style="color:#22c55e;">2026年</span></td><td><span style="color:#ef4444;">2015年</span></td><td><span style="color:#f59e0b;">2020年</span></td><td><span style="color:#22c55e;">2026年</span></td> </tr>
-</tbody></table></div><div class="comparison-legend"><div class="legend-item"><i class="fas fa-check-circle check-yes"></i><span>完全支持</span></div><div class="legend-item"><i class="fas fa-minus-circle check-partial"></i><span>部分支持</span></div><div class="legend-item"><i class="fas fa-times-circle check-no"></i><span>不支持</span></div></div></div></section>
-
-<!-- 更新日志 -->
-<section class="changelog" id="changelog"><div class="section-header"><div class="section-tag glass">更新日志</div><h2 class="section-title">版本历史</h2><p class="section-desc">持续更新，不断进化</p></div><div id="changelog-container"></div><div style="text-align: center; margin-top: 2rem;"><a href="https://compileride.github.io/changelogs.html" class="btn-secondary glass" style="display: inline-flex;"><i class="fas fa-history"></i><span>查看全部更新历史</span></a></div></section>
-
-<!-- FAQ -->
-<section class="faq" id="faq"><div class="section-header"><div class="section-tag glass">常见问题</div><h2 class="section-title">FAQ</h2><p class="section-desc">快速解答您的疑问</p></div>
-    <div class="faq-item glass-card fade-in"><div class="faq-question" onclick="toggleFaq(this)"><span>Compiler IDE 支持哪些操作系统？</span><i class="fas fa-chevron-down"></i></div><div class="faq-answer">目前 Compiler IDE 支持 Windows 10/11 64位系统。未来计划支持 macOS 和 Linux。</div></div>
-    <div class="faq-item glass-card fade-in"><div class="faq-question" onclick="toggleFaq(this)"><span>安装包为什么有不同大小？</span><i class="fas fa-chevron-down"></i></div><div class="faq-answer">提供两个版本：精简版（约400MB）不含编译器，需自行安装MinGW；完整版（约1GB）内置最新版 TDM-GCC 编译器，开箱即用。</div></div>
-    <div class="faq-item glass-card fade-in"><div class="faq-question" onclick="toggleFaq(this)"><span>如何配置编译器路径？</span><i class="fas fa-chevron-down"></i></div><div class="faq-answer">完整版自动配置，无需手动设置。精简版需在设置中手动指定 MinGW 的 bin 目录路径，例如：C:\mingw64\bin</div></div>
-    <div class="faq-item glass-card fade-in"><div class="faq-question" onclick="toggleFaq(this)"><span>竞赛模式有什么特别之处？</span><i class="fas fa-chevron-down"></i></div><div class="faq-answer">竞赛模式专为算法竞赛设计，提供倒计时/正计时器，可禁用自动补全、自动保存等功能，让你专注于编码。还支持快速编译运行快捷键。</div></div>
-    <div class="faq-item glass-card fade-in"><div class="faq-question" onclick="toggleFaq(this)"><span>如何获取更新？</span><i class="fas fa-chevron-down"></i></div><div class="faq-answer">IDE 启动时会自动检查更新。如有新版本，会弹出提示，点击即可一键更新。也可在"帮助"菜单中手动检查更新。</div></div>
-    <div class="faq-item glass-card fade-in"><div class="faq-question" onclick="toggleFaq(this)"><span>Compiler IDE 与 Dev-C++ 有什么区别？</span><i class="fas fa-chevron-down"></i></div><div class="faq-answer">Compiler IDE 拥有更现代化的界面、更好的C++20/23支持、集成终端、竞赛模式、系统性能监控等功能。Dev-C++ 自2015年后已停止更新，而 Compiler IDE 持续维护更新中。</div></div>
-</section>
-
-<!-- 下载区域 -->
-<section class="cta-section" id="download">
-    <div class="cta-card">
-        <div class="cta-bg"></div>
-        <div class="cta-grid-overlay"></div>
-        <div class="cta-content">
-            <div class="section-label"> 开始使用</div>
-            <h2>准备好开始了吗？</h2>
-            <p>立即下载 Compiler IDE，体验现代化的C++开发环境</p>
-            <div class="cta-actions">
-                <a href="https://gh-proxy.org/https://github.com/CompilerIDE/CompilerIDE.github.io/releases/download/CompilerIDE/CompilerIDE_setup.exe" class="btn-primary" id="downloadBtn2">
-                    <i class="fas fa-download"></i> 免费下载
-                </a>
-            </div>
-            <div class="cta-meta">
-                <div class="meta-item"><i class="fab fa-windows"></i> Windows 10/11</div>
-                <div class="meta-item"><i class="fas fa-box"></i> 约 400MB - 1GB</div>
-                <div class="meta-item"><i class="fas fa-shield-halved"></i> 安全无广告</div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- 页脚 -->
-<footer><div class="social-links"><a href="https://github.com/CompilerIDE/CompilerIDE" class="social-link glass" title="GitHub"><i class="fab fa-github"></i></a><a href="https://qm.qq.com/q/nJPZKOvLVe" class="social-link glass" title="QQ群"><i class="fab fa-qq"></i></a><a href="https://afdian.com/a/CompilerIDE" class="social-link glass" title="爱发电"><i class="fas fa-heart"></i></a></div><div class="footer-links"><a href="#features">功能特性</a><a href="#screenshots">界面预览</a><a href="#comparison">IDE对比</a><a href="#changelog">更新日志</a><a href="#faq">常见问题</a><a href="https://github.com/CompilerIDE/CompilerIDE.github.io/issues" target="_blank">反馈问题</a></div><p class="copyright">© 2026 Compiler IDE. All rights reserved.</p></div></footer>
-
-<script>
-    (function() {
-        const canvas = document.getElementById('bg-canvas');
-        const ctx = canvas.getContext('2d');
-        let W, H, particles = [];
-        function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
-        resize(); window.addEventListener('resize', resize);
-        const COLORS = ['rgba(0,229,255,', 'rgba(124,58,237,', 'rgba(244,63,94,0.3,'];
-        class Particle {
-            constructor() { this.reset(); }
-            reset() {
-                this.x = Math.random() * W; this.y = Math.random() * H;
-                this.r = Math.random() * 1.5 + 0.3;
-                this.vx = (Math.random() - 0.5) * 0.3; this.vy = (Math.random() - 0.5) * 0.3;
-                this.alpha = Math.random() * 0.5 + 0.1;
-                this.color = COLORS[Math.floor(Math.random() * 2)];
-                this.baseAlpha = this.alpha;
-                this.twinkleSpeed = Math.random() * 0.015 + 0.005;
-                this.twinklePhase = Math.random() * Math.PI * 2;
+            function resize() {
+                W = canvas.width = window.innerWidth;
+                H = canvas.height = window.innerHeight;
             }
-            update() {
-                this.x += this.vx; this.y += this.vy;
-                this.twinklePhase += this.twinkleSpeed;
-                this.alpha = this.baseAlpha * (0.6 + 0.4 * Math.sin(this.twinklePhase));
-                if (this.x < -5 || this.x > W + 5 || this.y < -5 || this.y > H + 5) this.reset();
-            }
-            draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.r, 0, Math.PI*2); ctx.fillStyle = this.color + this.alpha + ')'; ctx.fill(); }
-        }
-        class Meteor {
-            constructor() { this.reset(); }
-            reset() {
-                this.x = Math.random() * W * 0.7; this.y = Math.random() * H * 0.4;
-                this.len = Math.random() * 120 + 80; this.speed = Math.random() * 6 + 4;
-                this.alpha = 0; this.active = false; this.timer = Math.random() * 300;
-            }
-            update() {
-                if (this.timer > 0) { this.timer--; return; }
-                if (!this.active) { this.active = true; this.alpha = 0; }
-                this.x += this.speed; this.y += this.speed * 0.5;
-                this.alpha = Math.min(this.alpha + 0.08, 1);
-                if (this.x > W + this.len) this.reset();
-            }
-            draw() {
-                if (!this.active || this.alpha === 0) return;
-                const grd = ctx.createLinearGradient(this.x - this.len, this.y - this.len*0.5, this.x, this.y);
-                grd.addColorStop(0, 'rgba(255,255,255,0)'); grd.addColorStop(1, `rgba(255,255,255,${this.alpha*0.8})`);
-                ctx.beginPath(); ctx.moveTo(this.x - this.len, this.y - this.len*0.5); ctx.lineTo(this.x, this.y);
-                ctx.strokeStyle = grd; ctx.lineWidth = 1.5; ctx.stroke();
-                ctx.beginPath(); ctx.arc(this.x, this.y, 2, 0, Math.PI*2); ctx.fillStyle = `rgba(255,255,255,${this.alpha})`; ctx.fill();
-            }
-        }
-        const blobs = [
-            { x: 0.15, y: 0.3, r: 0.35, color: 'rgba(124,58,237,0.06)', phase: 0, speed: 0.0008 },
-            { x: 0.8, y: 0.7, r: 0.4, color: 'rgba(0,229,255,0.05)', phase: 1.5, speed: 0.001 },
-            { x: 0.5, y: 0.5, r: 0.3, color: 'rgba(244,63,94,0.04)', phase: 3, speed: 0.0007 }
-        ];
-        for (let i = 0; i < 180; i++) particles.push(new Particle());
-        const meteors = [new Meteor(), new Meteor(), new Meteor()];
-        function loop() {
-            ctx.clearRect(0,0,W,H);
-            const bg = ctx.createLinearGradient(0,0,W,H);
-            bg.addColorStop(0,'#050508'); bg.addColorStop(0.5,'#07070f'); bg.addColorStop(1,'#050508');
-            ctx.fillStyle = bg; ctx.fillRect(0,0,W,H);
-            blobs.forEach(b => {
-                b.phase += b.speed;
-                const bx = (b.x + Math.sin(b.phase)*0.05)*W, by = (b.y + Math.cos(b.phase*0.7)*0.05)*H, br = b.r * Math.min(W,H);
-                const grd = ctx.createRadialGradient(bx,by,0,bx,by,br);
-                grd.addColorStop(0,b.color); grd.addColorStop(1,'transparent');
-                ctx.fillStyle = grd; ctx.fillRect(0,0,W,H);
-            });
-            particles.forEach(p => { p.update(); p.draw(); });
-            meteors.forEach(m => { m.update(); m.draw(); });
-            requestAnimationFrame(loop);
-        }
-        loop();
-    })();
+            window.addEventListener('resize', resize);
+            resize();
 
-    // ========== 修正版本号动态更新 ==========
-    async function updateVersion() {
-        try {
-            const response = await fetch('https://compileride.github.io/version.txt');
-            const version = (await response.text()).trim();
-            if (version) {
-                // 1. 顶部下载按钮文字
-                const topDownloadSpan = document.querySelector('#downloadBtn span');
-                if (topDownloadSpan) topDownloadSpan.textContent = `立即下载 v${version}`;
-                // 2. 对比表格中 Compiler IDE 的版本号
-                const ideVersionSpan = document.querySelector('.comparison-table th.highlight .ide-version');
-                if (ideVersionSpan) ideVersionSpan.textContent = `v${version}`;
-                // 3. 底部浮动通知条中的版本号 (仅更新数字部分，保持其他文字不变)
-                const annBarSpan = document.querySelector('#annBar > span:first-of-type');
-                if (annBarSpan && annBarSpan.textContent.includes('v')) {
-                    annBarSpan.textContent = annBarSpan.textContent.replace(/v[\d.]+/, `v${version}`);
+            class Particle {
+                constructor() { this.reset(); }
+                reset() {
+                    this.x = Math.random() * W;
+                    this.y = Math.random() * H;
+                    this.r = Math.random() * 1.5 + 0.3;
+                    this.vx = (Math.random() - 0.5) * 0.3;
+                    this.vy = (Math.random() - 0.5) * 0.3;
+                    this.alpha = Math.random() * 0.5 + 0.1;
+                    this.color = COLORS[Math.floor(Math.random() * COLORS.length)];
+                    this.baseAlpha = this.alpha;
+                    this.twinkleSpeed = Math.random() * 0.015 + 0.005;
+                    this.twinklePhase = Math.random() * Math.PI * 2;
+                }
+                update() {
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    this.twinklePhase += this.twinkleSpeed;
+                    this.alpha = this.baseAlpha * (0.6 + 0.4 * Math.sin(this.twinklePhase));
+                    if (this.x < -5 || this.x > W + 5 || this.y < -5 || this.y > H + 5) this.reset();
+                }
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+                    ctx.fillStyle = this.color + this.alpha + ')';
+                    ctx.fill();
                 }
             }
-        } catch (error) {
-            console.error('获取版本号失败:', error);
-            // 失败时不做任何修改，保留原有 v3.5.2
-        }
-    }
 
-    const navbar = document.getElementById('navbar');
-    window.addEventListener('scroll', () => { navbar.classList.toggle('scrolled', window.scrollY > 50); });
-    function toggleFaq(element) { const answer = element.nextElementSibling; const icon = element.querySelector('i'); answer.classList.toggle('active'); icon.style.transform = answer.classList.contains('active') ? 'rotate(180deg)' : ''; }
-    const observer = new IntersectionObserver((entries) => { entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.1 });
-    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-    function lazyLoadImages() {
-        const lazyImages = document.querySelectorAll('img.lazyload');
-        const imageObserver = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const img = entry.target;
-                    const wrapper = img.closest('.lazyload-wrapper');
-                    const tempImg = new Image();
-                    tempImg.onload = function() { img.src = img.dataset.src; img.classList.add('loaded'); if (wrapper) wrapper.classList.add('loaded'); };
-                    tempImg.onerror = function() { if (wrapper) { const placeholder = wrapper.querySelector('.lazyload-placeholder'); if (placeholder) placeholder.className = 'fas fa-image-slash lazyload-placeholder'; } };
-                    tempImg.src = img.dataset.src;
-                    observer.unobserve(img);
+            class Meteor {
+                constructor() { this.reset(); }
+                reset() {
+                    this.x = Math.random() * W * 0.7;
+                    this.y = Math.random() * H * 0.4;
+                    this.len = Math.random() * 120 + 80;
+                    this.speed = Math.random() * 6 + 4;
+                    this.alpha = 0;
+                    this.active = false;
+                    this.timer = Math.random() * 300;
                 }
-            });
-        }, { threshold: 0.1, rootMargin: '100px' });
-        lazyImages.forEach(img => imageObserver.observe(img));
-    }
-    document.addEventListener('DOMContentLoaded', () => {
-        lazyLoadImages();
-        updateVersion();  // 页面加载完成时获取远程版本号并更新
-    });
-    const downloadBtns = document.querySelectorAll('#downloadBtn, #downloadBtn2');
-    downloadBtns.forEach(btn => { btn.addEventListener('click', function(e) { const btnText = this.querySelector('span') || this.querySelector('#downloadBtnText'); const originalText = btnText.textContent; btnText.textContent = '下载开始...'; this.style.pointerEvents = 'none'; setTimeout(() => { btnText.textContent = originalText; this.style.pointerEvents = 'auto'; }, 3000); }); });
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => { anchor.addEventListener('click', function (e) { e.preventDefault(); const target = document.querySelector(this.getAttribute('href')); if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }); });
-    async function fetchChangelogData() {
-        try {
-            const versionResponse = await fetch('https://compileride.github.io/version.txt');
-            const version = (await versionResponse.text()).trim();
-            document.querySelectorAll('.version-number').forEach(el => { el.textContent = version; });
-            const changelogResponse = await fetch('https://compileride.github.io/changelog-data.json');
-            const data = await changelogResponse.json();
-            const recentChangelogs = data.changelogs.slice(0, 2);
-            renderChangelogs(recentChangelogs);
-        } catch (error) { console.error('获取数据失败:', error); renderFallbackChangelogs(); }
-    }
-    function renderChangelogs(changelogs) { const container = document.getElementById('changelog-container'); if (!container) return; container.innerHTML = changelogs.map((log, index) => `<div class="changelog-item glass-card fade-in"><div class="changelog-version">v${log.version}${index === 0 ? ' <span style="font-size: 0.7em; background: linear-gradient(135deg, var(--accent-color), #ff8c5a); padding: 0.2rem 0.6rem; border-radius: 100px; color: white; -webkit-text-fill-color: white; margin-left: 0.5rem;">最新</span>' : ''}</div><ul>${log.changes.map(change => `<li>${change}</li>`).join('')}</ul></div>`).join(''); container.querySelectorAll('.fade-in').forEach(el => observer.observe(el)); }
-    function renderFallbackChangelogs() { const container = document.getElementById('changelog-container'); if (!container) return; container.innerHTML = `<div class="changelog-item glass-card fade-in"><div class="changelog-version">版本 3.0.7 <span style="font-size: 0.7em; background: linear-gradient(135deg, var(--accent-color), #ff8c5a); padding: 0.2rem 0.6rem; border-radius: 100px; color: white; -webkit-text-fill-color: white; margin-left: 0.5rem;">最新</span></div><ul><li>修复了调试面板的 Bug</li><li>支持查看调用栈信息、变量调用等功能</li><li>新增调试器路径选择功能</li></ul></div><div class="changelog-item glass-card fade-in"><div class="changelog-version">版本 3.0.0</div><ul><li>修复了若干已知的 Bug</li><li>新增了比赛模式</li><li>新增了诊断工具、代码片段功能</li></ul></div>`; }
-    fetchChangelogData();
-    async function fetchRealDownloadCount() { const countElement = document.getElementById('downloadCount'); if (!countElement) return; countElement.classList.add('loading'); try { const response = await fetch('https://api.github.com/repos/Eric-T800/Eric-T800.github.io/releases/latest'); if (!response.ok) throw new Error(`API请求失败: ${response.status}`); const data = await response.json(); if (!data.assets || data.assets.length === 0) throw new Error('没有assets数据'); const releaseDownloads = data.assets.reduce((sum, asset) => sum + asset.download_count, 0); const totalDownloads = 200 + releaseDownloads; countElement.classList.remove('loading'); countElement.textContent = totalDownloads.toLocaleString(); countElement.classList.add('updating'); setTimeout(() => countElement.classList.remove('updating'), 300); } catch (error) { console.error('获取下载量失败:', error); countElement.classList.remove('loading'); countElement.textContent = '200'; } }
-    document.addEventListener('DOMContentLoaded', () => { setTimeout(fetchRealDownloadCount, 1000); setInterval(fetchRealDownloadCount, 2 * 60 * 1000); });
-    window.addEventListener('load', () => { document.body.style.opacity = '0'; document.body.style.transition = 'opacity 0.5s ease'; requestAnimationFrame(() => { document.body.style.opacity = '1'; }); });
-</script>
+                update() {
+                    if (this.timer > 0) { this.timer--; return; }
+                    if (!this.active) { this.active = true; this.alpha = 0; }
+                    this.x += this.speed;
+                    this.y += this.speed * 0.5;
+                    this.alpha = Math.min(this.alpha + 0.08, 1);
+                    if (this.x > W + this.len) this.reset();
+                }
+                draw() {
+                    if (!this.active || this.alpha === 0) return;
+                    const grd = ctx.createLinearGradient(this.x - this.len, this.y - this.len * 0.5, this.x, this.y);
+                    grd.addColorStop(0, 'rgba(255,255,255,0)');
+                    grd.addColorStop(1, `rgba(255,255,255,${this.alpha * 0.8})`);
+                    ctx.beginPath();
+                    ctx.moveTo(this.x - this.len, this.y - this.len * 0.5);
+                    ctx.lineTo(this.x, this.y);
+                    ctx.strokeStyle = grd;
+                    ctx.lineWidth = 1.5;
+                    ctx.stroke();
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255,255,255,${this.alpha})`;
+                    ctx.fill();
+                }
+            }
+
+            const blobs = [
+                { x: 0.15, y: 0.3, r: 0.35, color: 'rgba(124,58,237,0.06)', phase: 0, speed: 0.0008 },
+                { x: 0.8, y: 0.7, r: 0.4, color: 'rgba(0,229,255,0.05)', phase: 1.5, speed: 0.001 },
+                { x: 0.5, y: 0.5, r: 0.3, color: 'rgba(244,63,94,0.04)', phase: 3, speed: 0.0007 }
+            ];
+
+            for (let i = 0; i < 180; i++) particles.push(new Particle());
+            const meteors = [new Meteor(), new Meteor(), new Meteor()];
+
+            function loop() {
+                ctx.clearRect(0, 0, W, H);
+                const bg = ctx.createLinearGradient(0, 0, W, H);
+                bg.addColorStop(0, '#050508');
+                bg.addColorStop(0.5, '#07070f');
+                bg.addColorStop(1, '#050508');
+                ctx.fillStyle = bg;
+                ctx.fillRect(0, 0, W, H);
+
+                blobs.forEach(b => {
+                    b.phase += b.speed;
+                    const bx = (b.x + Math.sin(b.phase) * 0.05) * W;
+                    const by = (b.y + Math.cos(b.phase * 0.7) * 0.05) * H;
+                    const br = b.r * Math.min(W, H);
+                    const grd = ctx.createRadialGradient(bx, by, 0, bx, by, br);
+                    grd.addColorStop(0, b.color);
+                    grd.addColorStop(1, 'transparent');
+                    ctx.fillStyle = grd;
+                    ctx.fillRect(0, 0, W, H);
+                });
+
+                particles.forEach(p => { p.update(); p.draw(); });
+                meteors.forEach(m => { m.update(); m.draw(); });
+                requestAnimationFrame(loop);
+            }
+            loop();
+        })();
+
+        // 倒计时与取消逻辑
+        let seconds = 3;
+        const countdownEl = document.getElementById('countdownDisplay');
+        const redirectMessageEl = document.getElementById('redirectMessage');
+        const redirectUrl = 'https://compileride.cn';
+        let redirectTimer;
+
+        function updateCountdown() {
+            if (seconds <= 0) {
+                window.location.href = redirectUrl;
+                return;
+            }
+            countdownEl.textContent = seconds;
+            seconds--;
+            redirectTimer = setTimeout(updateCountdown, 1000);
+        }
+
+        function stopRedirect() {
+            if (redirectTimer) {
+                clearTimeout(redirectTimer);
+                redirectTimer = null;
+                // 优雅地修改提示文本，不再出现“已取消秒”
+                redirectMessageEl.innerHTML = '自动跳转已取消，您可以手动点击下方按钮前往新官网。';
+            }
+        }
+
+        // 开始倒计时
+        updateCountdown();
+
+        // 页面加载淡入
+        window.addEventListener('load', () => {
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.5s ease';
+            requestAnimationFrame(() => { document.body.style.opacity = '1'; });
+        });
+    </script>
 </body>
 </html>
