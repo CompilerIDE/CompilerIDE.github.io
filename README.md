@@ -2,7 +2,7 @@
 [IDE 官网 + 下载](https://compileride.cn)
 
 ## 产品简介
-本 IDE 由 CompilerIDE Team 共同开发，支持的编程语言只有 C++。目前最新版本为 $3.7.0$。操作系统应为 Windows + 64 位操作系统（不支持 Win7 及更低版本）。
+本 IDE 由 CompilerIDE Team 共同开发，支持的编程语言只有 C++。目前最新版本为 $3.8.1$。操作系统应为 Windows + 64 位操作系统（不支持 Win7 及更低版本）。
 
 截至目前，本 IDE 支持如下功能：
 - [x] 一键编译运行
@@ -47,7 +47,7 @@
 
 ## 注意事项
 1. 此 IDE 可能含有 Bug，若发现 Bug，请在 issues 中说出 Bug；
-2. 感谢 DeepSeek V3.2 和 Claude opus 4.5 对终端、调试功能做出的贡献；
+2. 感谢 DeepSeek V4 和 GPT 6 sol 对终端、调试功能做出的贡献；
 3. 感谢 Claude opus 4.5 对 IDE 官网做出的卓越贡献；
-4. 感谢 DeepSeek V3.2 对产品简介部分进行的润色。
+4. 感谢 DeepSeek V4 对产品简介部分进行的润色。
 5. 如果你觉得不错，请给这个项目点个 Star 吧！
